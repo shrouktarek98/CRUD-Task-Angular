@@ -1,0 +1,104 @@
+<div class="provider">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="create_post">
+                    <h5>Create post</h5>
+                    <div class="text">
+                        <form #create="ngForm" (ngSubmit)="create_posts(create.value)">
+                            <div>
+                                <input #Title="ngModel" [(ngModel)]="title" type="text" placeholder="Title" name="title" required>
+                                <div class="alert alert-danger" *ngIf="Title.touched && Title.invalid">
+                                    <div *ngIf="Title.errors">Title is required.</div>
+                                </div>
+                            </div>
+                            <div>
+                                <textarea #Description="ngModel" [(ngModel)]="description" placeholder="Description of  your post " name="body" required></textarea>
+                                <div class="alert alert-danger" *ngIf="Description.touched  && Description.invalid">
+                                    <div *ngIf="Description.errors">Description is required.</div>
+                                </div>
+                            </div>
+                            <div class="buttons">
+                                <button type="submit" class="btn btn-info" [disabled]="!create.valid">Post</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <input type="search " class="search" placeholder="Search" [(ngModel)]="search" name="search">
+            </div>
+        </div>
+        
+
+        <div class="row" *ngFor="let post of posts |searchPost : 'title' : search ">
+            <div class="col-md-9">
+                <div class="posts">
+                    <h3>{{post.title}}</h3>
+                    <p>{{post.body}}</p>
+                    <i class="fas fa-edit"></i>
+                    <a (click)="update_Post(post.id)" href="#editEmployeeModal" class="edit" data-toggle="modal">Update</a>
+                    <i class="fas fa-trash" *ngIf="services.admin"></i>
+                    <a (click)="deletePost(post.id)" href="#deleteEmployeeModal" class="remove" *ngIf="services.admin" data-toggle="modal">Remove</a>
+                    <!-- <button name="remove_post" (click)="deletePost(post.id)" *ngIf="services.admin">Remove</button> -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="editEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form (ngSubmit)="UpdatePost(update.value)" #update="ngForm">
+
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Post</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input id="edit_id" [(ngModel)]="post.id" #EditID="ngModel" type="text" class="form-control" required style="display:none" name="id">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input id="edit_title" [(ngModel)]="post.title" type="text" class="form-control" required name="title">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input id="edit_description" [(ngModel)]="post.body" type="text" class="form-control" required name="body">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-info hide" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="deleteEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form (ngSubmit)="Delete_Post(delete.value)" #delete="ngForm">
+                <input id="delete_id" [(ngModel)]="post.id" #EditID="ngModel" type="text" class="form-control" required style="display:none" name="id">
+					<div class="modal-header">						
+						<h4 class="modal-title">Delete Post</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<p>Are you sure you want to delete these Records?</p>
+						<p class="text-warning"><small>This action cannot be undone.</small></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input id="del" type="submit"  class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>

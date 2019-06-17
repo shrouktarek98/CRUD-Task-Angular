@@ -1,0 +1,53 @@
+.login {
+    width: 30%;
+    margin: 100px auto;
+    border: 2px solid rgb(85, 84, 84);
+    padding: 20px;
+}
+
+@media(max-width:1200px) {
+    .login {
+        width: 50%;
+    }
+}
+
+@media(max-width:750px) {
+    .login {
+        width: 80%;
+    }
+}
+
+@media(max-width:390px) {
+    .login {
+        width: 95%;
+    }
+}
+
+.first {
+    margin: 15px auto 20px;
+    color: rgb(24, 181, 209);
+    font-size: 25px;
+    text-align: center;
+}
+
+form input {
+    margin: 20px 0px;
+}
+
+.save {
+    width: 100%;
+    cursor: pointer;
+}
+
+.google {
+    cursor: pointer;
+    width: 100%;
+    background-color: rgba(250, 143, 2, 0.815);
+    padding: 0px;
+    color: #fff;
+}
+
+.google img {
+    height: 80%;
+    width: 40px;
+}

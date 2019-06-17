@@ -1,0 +1,103 @@
+.create_post,
+.posts {
+    margin: 80px 0px 20px;
+    border: 1px solid rgb(197, 197, 197);
+    width: 100%;
+    background: #ffffff;
+}
+
+.create_post h5 {
+    padding: 8px;
+    font-weight: bold;
+    background: #e8ecf0;
+    border-bottom: 1px solid rgb(197, 197, 197);
+    margin: 0px;
+}
+
+.create_post .alert {
+    margin: 10px 0px;
+}
+
+.create_post input,
+.create_post textarea,
+.create_post select,
+.create_post .buttons {
+    display: block;
+    width: 95%;
+    color: #706f6f;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid rgb(197, 197, 197);
+    padding: 10px 0px;
+    margin: 0px 1.5%;
+}
+
+.create_post textarea {
+    resize: vertical;
+    height: 150px;
+}
+
+.create_post input:focus {
+    border: none !important;
+}
+
+.create_post .buttons {
+    height: 50px;
+    border: none;
+}
+
+.create_post button {
+    float: right;
+}
+
+.posts {
+    margin: 10px 0px 20px;
+    padding: 0px 30px 10px;
+}
+
+.posts h3 {
+    color: rgb(41, 93, 236);
+    margin-top: 12px;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.posts p {
+    color: #706f6f;
+    font-size: 20px;
+    margin-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(197, 197, 197);
+    font-size: 14px;
+}
+
+.posts button,
+.posts a {
+    border: none;
+    background: none;
+    padding: 10px;
+    padding-left: 1px;
+    padding-right: 30px;
+    color: #706f6f;
+    text-decoration: none;
+}
+
+form {
+    padding: 10px;
+}
+
+.posts button:hover,
+.posts a:hover {
+    color: rgb(41, 93, 236);
+}
+
+.posts i {
+    color: #706f6f;
+}
+.search{
+    border: 1px solid rgb(197, 197, 197);
+    padding: 10px;
+    border-radius: 10px;
+    width:100%;
+    font-size:18px;
+}

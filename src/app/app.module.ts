@@ -4,20 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SigninComponent } from './signin/signin.component';
-import { SignupComponent } from './signup/signup.component';
-import { DataStoreService } from './data-store.service';
+import { SigninComponent } from './data-store/signin/signin.component';
+import { SignupComponent } from './data-store/signup/signup.component';
+import { DataStoreService } from './data-store/data-store.service';
 
-import { PostsComponent } from './posts/posts.component';
+import { PostsComponent } from './crud/posts/posts.component';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireModule } from '@angular/fire';
-// import { environment } from './../environments/environment';
 
 import { AngularFireDatabase, AngularFireList, AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from 'src/environments/environment';
-import { CrudService } from './crud.service';
+import { CrudService } from './crud/crud.service';
 import { HeaderComponent } from './header/header.component';
-import { SearchPostPipe } from './search-post.pipe';
+import { SearchPostPipe } from './crud/pipes/search-post.pipe';
 
 
 @NgModule({
@@ -28,7 +27,7 @@ import { SearchPostPipe } from './search-post.pipe';
     PostsComponent,
     HeaderComponent,
     SearchPostPipe,
-    
+
   ],
   imports: [
 
@@ -39,7 +38,7 @@ import { SearchPostPipe } from './search-post.pipe';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     HttpClientModule,
-    
+
   ],
   providers: [DataStoreService, CrudService],
   bootstrap: [AppComponent]

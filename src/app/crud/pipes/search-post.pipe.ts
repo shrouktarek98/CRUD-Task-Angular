@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
+
 @Pipe({
   name: 'searchPost'
 })
@@ -12,7 +13,7 @@ export class SearchPostPipe implements PipeTransform {
     return items.filter(
       it => it[field].search(value) != -1);
 
-    
+
   }
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from "@angular/router";
 import { DataStoreService } from '../data-store.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -8,18 +9,19 @@ import { DataStoreService } from '../data-store.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  @ViewChild('formdata') SignUpForm: NgForm;
   email: any;
   password: any;
-  
-  constructor(private route: Router, private services: DataStoreService ) { }
+
+
+  constructor(private route: Router, public services: DataStoreService ) { }
   ngOnInit() {
     if(this.services.iscatch() ){
       this.route.navigate(['/posts']);
     }
   }
-  onClickSubmit(date){
-    console.log(date.email);
-    this.services.signupUser(date.email, date.password);
+  onClickSubmit() {
+    this.services.signupUser( this.SignUpForm.value.email, this.SignUpForm.value.password);
   }
 
 }

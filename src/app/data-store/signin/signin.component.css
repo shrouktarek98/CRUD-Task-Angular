@@ -23,6 +23,10 @@
     }
 }
 
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
 .first {
     margin: 15px auto 20px;
     color: rgb(24, 181, 209);

@@ -12,7 +12,6 @@ export const environment = {
     storageBucket: "task-angular-313fb.appspot.com",
     messagingSenderId: "704069593701",
     appId: "1:704069593701:web:f09f320b48aa9f69"
-    
   }
 };
 

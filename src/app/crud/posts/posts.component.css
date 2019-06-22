@@ -50,38 +50,6 @@
     float: right;
 }
 
-.posts {
-    margin: 10px 0px 20px;
-    padding: 0px 30px 10px;
-}
-
-.posts h3 {
-    color: rgb(41, 93, 236);
-    margin-top: 12px;
-    font-size: 15px;
-    margin-bottom: 5px;
-}
-
-.posts p {
-    color: #706f6f;
-    font-size: 20px;
-    margin-top: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgb(197, 197, 197);
-    font-size: 14px;
-}
-
-.posts button,
-.posts a {
-    border: none;
-    background: none;
-    padding: 10px;
-    padding-left: 1px;
-    padding-right: 30px;
-    color: #706f6f;
-    text-decoration: none;
-}
-
 form {
     padding: 10px;
 }
@@ -94,10 +62,54 @@ form {
 .posts i {
     color: #706f6f;
 }
-.search{
+
+.search {
     border: 1px solid rgb(197, 197, 197);
     padding: 10px;
     border-radius: 10px;
-    width:100%;
-    font-size:18px;
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 50px;
+}
+
+.files {
+    margin: 80px 0px 20px;
+    border: 1px solid rgb(197, 197, 197);
+    width: 100%;
+    background: #ffffff;
+    padding-bottom: 15px;
+}
+
+.importFile h5 {
+    padding: 10px;
+}
+
+.importFile input {
+    padding: 0px 10px 10px;
+}
+
+.importFile button {
+    margin: 0px 10px;
+}
+
+.importFile .line {
+    border-top: 1px solid rgb(197, 197, 197);
+    width: 90%;
+    margin: 15px auto 0px;
+}
+
+.exportFile {
+    padding: 10px;
+}
+
+.exportFile h5 {
+    margin-top: 20px;
+}
+
+.card {
+    margin: 10px 0px;
+}
+
+.post a {
+    margin-right: 20px;
 }

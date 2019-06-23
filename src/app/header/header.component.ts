@@ -9,7 +9,7 @@ import { DataStoreService } from './../data-store/data-store.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public services:DataStoreService) { }
+  constructor(public dataStoreService: DataStoreService) { }
 
   ngOnInit() {
   }

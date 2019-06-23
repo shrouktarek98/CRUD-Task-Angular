@@ -7,17 +7,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" *ngIf="!services.iscatch() && !services.admin" [routerLink]="['/Signup']">SignUp</a>
+                <a class="nav-link" *ngIf="!dataStoreService.isCatch() && !dataStoreService.admin" [routerLink]="['/signUp']">SignUp</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" *ngIf="!services.iscatch() && !services.admin" [routerLink]="['/Signin']">SignIn</a>
+                <a class="nav-link" *ngIf="!dataStoreService.isCatch() && !dataStoreService.admin" [routerLink]="['/signIn']">SignIn</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " *ngIf="services.iscatch() || services.admin" (click)="services.logOut()" href="#">LogOut</a>
+                <a class="nav-link " *ngIf="dataStoreService.isCatch() || dataStoreService.admin" (click)="dataStoreService.logOut()" href="#">LogOut</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" *ngIf="services.iscatch() || services.admin" [routerLink]="['/posts']">Posts <span class="sr-only">(current)</span></a>
+                <a class="nav-link" *ngIf="dataStoreService.isCatch() || dataStoreService.admin" [routerLink]="['/posts']">Posts <span class="sr-only">(current)</span></a>
             </li>
 
         </ul>

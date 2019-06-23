@@ -1,30 +1,30 @@
 <div class="provider">
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="create_post">
                     <h5>Create post</h5>
                     <div class="text">
-                        <form #create="ngForm" (ngSubmit)="create_posts(create.value)">
+                        <form [formGroup]="createForm" (ngSubmit)="createPost(createForm.value)">
                             <div class="form-group">
-                                <input #Title="ngModel" ngModel type="text" placeholder="Title" name="title" required>
+                                <input type="text" formControlName="title" placeholder="Title" name="title">
                             </div>
                             <div class="form-group">
-                                <textarea #Description="ngModel" ngModel placeholder="Description of  your post " name="body" required></textarea>
+                                <textarea formControlName="body" placeholder="Description of  your post " name="body"></textarea>
                             </div>
                             <div class="buttons">
-                                <button type="submit" class="btn btn-info" [disabled]="!create.valid">Post</button>
+                                <button type="submit" class="btn btn-info" [disabled]="!createForm.valid">Post</button>
                             </div>
                         </form>
                     </div>
 
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="files">
-                    <div class="importFile" *ngIf="services.admin">
+                    <div class="importFile" *ngIf="dataStoreService.admin">
                         <h5>To Upload Excl File</h5>
-                        <input type="file" [(ngModel)]="resetFile" style="display: inline-block;" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">
+                        <input type="file" [(ngModel)]="resetFile" style="display: inline-block;" (change)="inComingFile($event)" placeholder="Upload file" accept=".xlsx">
                         <button type="button" class="btn btn-danger" (click)="Upload()">Upload</button>
                         <div class="line"></div>
                     </div>
@@ -35,15 +35,15 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-lg-8">
                 <input type="search " class="search" placeholder="Search" [(ngModel)]="search" name="search">
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9" *ngFor="let post of posts |searchPost : 'title' : search ">
+            <div class="col-lg-4 col-sm-6" *ngFor="let post of posts |searchPost : 'title' : search |paginate: { itemsPerPage: 10, currentPage: number}">
                 <div class="card text-center post">
                     <div class="card-header">
                         {{post.title}}
@@ -54,16 +54,18 @@
                     </div>
                     <div class="card-footer text-muted">
                         <i class="fas fa-edit"></i>
-                        <a (click)="update_Post(post.id)" href="#editEmployeeModal" class="edit card-link" data-toggle="modal">Update</a>
-                        <i class="fas fa-trash" *ngIf="services.admin"></i>
-                        <a (click)="deletePost(post.id)" href="#deleteEmployeeModal" class="remove card-link" *ngIf="services.admin" data-toggle="modal">Remove</a>
+                        <a (click)="updatePostForm(post)" href="#editEmployeeModal" class="edit card-link" data-toggle="modal">Update</a>
+                        <i class="fas fa-trash" *ngIf="dataStoreService.admin"></i>
+                        <a (click)="deletePostForm(post)" href="#deleteEmployeeModal" class="remove card-link" *ngIf="dataStoreService.admin" data-toggle="modal">Remove</a>
 
                     </div>
                 </div>
             </div>
+            <pagination-controls class="my-pagination col-12" (pageChange)="number = $event"></pagination-controls>
         </div>
     </div>
 </div>
+
 <div id="editEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -91,10 +93,11 @@
         </div>
     </div>
 </div>
+
 <div id="deleteEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form (ngSubmit)="Delete_Post(delete.value)" #delete="ngForm">
+            <form (ngSubmit)="deletePost(delete.value)" #delete="ngForm">
                 <input id="delete_id" [(ngModel)]="post.id" #EditID="ngModel" type="text" class="form-control" required style="display:none" name="id">
                 <div class="modal-header">
                     <h4 class="modal-title">Delete Post</h4>

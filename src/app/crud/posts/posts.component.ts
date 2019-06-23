@@ -1,63 +1,79 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DataStoreService } from './../../data-store/data-store.service';
 import { Router } from '@angular/router';
-import { CrudService } from './../crud.service';
+import { CrudService } from './../services/crud.service';
+import { ExcelService } from './../services/excel.service';
 import { HttpClient } from '@angular/common/http';
-import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { AlertService } from './../../services/alert.service';
+import { element } from 'protractor';
+import { ActivatedRoute } from '@angular/router';
 
 
-
+export class Post {
+  id: string;
+  title: string;
+  body: string;
+}
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.css']
 })
+
 export class PostsComponent implements OnInit {
-  @ViewChild('create') FormCreate: NgForm;
-  posts:Array<{id:string,title:string,body:string}>;
-  edit_id: any;
-  edit_title: any;
-  edit_description: any;
-  post: {id: string, title: string, body: string} = {id: '', title: '', body: ''};
-  postsFile: Array<{id: string, title: string, body: string}> ;
-  id: any;
+  createForm: FormGroup;
+  posts: Array<Post>;
+  post = {id: '', title: '', body: ''};
+  postsFile: Array<Post> ;
   search: string;
   resetFile: any;
   arrayBuffer: any;
   file: File;
-  count: number = 0;
-  public url= "https://jsonplaceholder.typicode.com/posts" ;
+  count = 0;
+  number = 0;
 
 
-  constructor(public http: HttpClient , private route:Router, public services: DataStoreService, public crudServe: CrudService) {
+  constructor(public http: HttpClient , private route:Router,
+     public dataStoreService: DataStoreService, public crudServe: CrudService,
+     public excelService: ExcelService, public alertService:  AlertService,
+     private activatedRoute: ActivatedRoute) {
 
-      if(!this.services.iscatch() ) {
-        this.route.navigate(['/Signin']);
-      }
-      else {
-        if(localStorage.getItem('user') === '"doneadmin"') {
-          this.services.admin = true;
-        }
-        else {
-          this.services.admin = false;
+      if (!this.dataStoreService.isCatch() ) {
+        this.route.navigate(['/signIn']);
+      } else {
+        if (localStorage.getItem('user') === '"doneAdmin"') {
+          this.dataStoreService.admin = true;
+        } else {
+          this.dataStoreService.admin = false;
         }
       }
   }
+
   ngOnInit() {
+    // this.posts = this.activatedRoute.snapshot.data['posts'];
     this.crudServe.get_posts().subscribe((res: any) => {
      this.posts = res;
-   });
- }
-  exportAsXLSX():void {
-    this.crudServe.exportAsExcelFile(this.posts, 'sample');
-  }
-  incomingfile(event){
-    this.file = event.target.files[0];
+     this.alertService.success('Welcome');
+    }, _error => {
+      this.alertService.error('Error Unexpected!');
+    });
+
+    this.createForm = new FormGroup({
+      'title': new FormControl(null, [Validators.required]),
+      'body': new FormControl(null, [Validators.required]),
+    });
   }
 
+
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.posts, 'sample');
+  }
+  inComingFile(event){
+    this.file = event.target.files[0];
+  }
   Upload() {
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
@@ -66,64 +82,58 @@ export class PostsComponent implements OnInit {
         let arr = new Array();
         for ( let i = 0 ; i != data.length; ++i) {arr[i] = String.fromCharCode(data[i]); }
         let bstr = arr.join('');
-        let workbook = XLSX.read(bstr, {type: "binary" });
-        let first_sheet_name = workbook.SheetNames[0];
-        let worksheet = workbook.Sheets[first_sheet_name];
-        this.postsFile = XLSX.utils.sheet_to_json(worksheet, { raw: true })
+        let workBook = XLSX.read(bstr, {type: 'binary' });
+        let firstSheetName = workBook.SheetNames[0];
+        let workSheet = workBook.Sheets[firstSheetName];
+        this.postsFile = XLSX.utils.sheet_to_json(workSheet, { raw: true } );
         for (let index = 0; index < this.postsFile.length; index++) {
           const element = this.postsFile[index];
-          this.create_posts(element);
+          this.createPost(element);
         }
-    }
+    };
     fileReader.readAsArrayBuffer(this.file);
-    this.resetFile= '';
+    this.resetFile = '';
   }
 
 
-  create_posts(request) {
-    this.http.post(this.url, JSON.stringify(request))
-      .subscribe((response:any) =>{
-          request.id=response.id+this.count;
-          this.count++;
-          this.posts.splice(0,0,request);
-      }
-    );
-    this.FormCreate.reset();
-  }
-  update_Post(id) {
-    this.posts.forEach(element => {
-      if(id == element.id){
-        this.post = element;
-      }
+  createPost(request) {
+    this.crudServe.createPost(request).subscribe((res: any) => {
+      request.id = res.id + this.count;
+      this.count++;
+      this.posts.splice(0, 0, request);
+      this.alertService.success('Success Create');
     });
-
+    this.createForm.reset();
   }
-  UpdatePost(request){
-    this.http.patch(this.url+'/'+this.post.id,this.post)
-    .subscribe(response=>{
+
+  updatePostForm(request) {
+    this.post = request;
+  }
+  UpdatePost(request) {
+    this.crudServe.updatePost(request).subscribe((res: any) => {
       this.posts.forEach(element => {
-        if(request.id === element.id){
+        if (request.id === element.id) {
           element.title = request.title;
           element.body = request.body;
+          this.alertService.success('Success Update Post!');
         }
       });
-    })
-
-  }
-  deletePost(request){
-    this.posts.forEach(element => {
-      if(request == element.id){
-        this.post= element;
-      }
+    }, _error => {
+      this.alertService.error('Error Unexpected!');
     });
   }
-  Delete_Post(){
-    console.log(this.post);
-    this.http.delete(this.url+'/'+this.post.id)
-     .subscribe(response=>{
-       let index = this.posts.indexOf(this.post);
-       this.posts.splice(index,1);
-     })
+
+  deletePostForm(request) {
+    this.post = request;
+  }
+  deletePost() {
+    this.crudServe.deletePost(this.post).subscribe((res: any) => {
+      let index = this.posts.indexOf(this.post);
+      this.posts.splice(index,1);
+      this.alertService.success('Success Delete Post!');
+    }, _error => {
+      this.alertService.error('Error Unexpected!');
+    });
   }
 
 

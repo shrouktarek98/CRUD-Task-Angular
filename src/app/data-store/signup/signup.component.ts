@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from "@angular/router";
 import { DataStoreService } from '../data-store.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -9,19 +9,20 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  @ViewChild('formdata') SignUpForm: NgForm;
-  email: any;
-  password: any;
-
+  SignUpForm: FormGroup;
 
   constructor(private route: Router, public services: DataStoreService ) { }
   ngOnInit() {
-    if(this.services.iscatch() ){
+    if (this.services.isCatch() ) {
       this.route.navigate(['/posts']);
     }
+    this.SignUpForm = new FormGroup({
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
+    });
   }
   onClickSubmit() {
-    this.services.signupUser( this.SignUpForm.value.email, this.SignUpForm.value.password);
+    this.services.signUpUser( this.SignUpForm.value.email, this.SignUpForm.value.password);
   }
 
 }
